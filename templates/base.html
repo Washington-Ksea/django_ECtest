@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{% block title %} baseタイトル {% endblock%}</title>
+</head>
+<body>
+    <!-- HEADER -->
+    {% if user.is_authenticated %} 
+        <p>Welcome</p>
+    {% else %}
+        {% include "header.html" with user=user path=request.path %}
+        <p>Login</p> 
+    {% endif %}
+
+    {% block content %}
+    {% endblock  %}
+
+    {% block js%}
+    {% endblock %}
+    
+</body>
+</html>
