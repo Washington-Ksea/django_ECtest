@@ -281,7 +281,7 @@ sql_mode = TRADITIONAL,NO_AUTO_VALUE_ON_ZERO,ONLY_FULL_GROUP_BY
 データベースをすべて削除して良い場合、以下を実行
 
 ```javascript
-find . -path "*/migrations/0*.pyc" -delete
+find . -path "*/migrations/0*.py" -delete
 find . -path "*/migrations/__pycache__/0*.pyc" -delete
 
 mysql -u root -p
@@ -292,4 +292,10 @@ create database django_test;
 mysql.server restart
 
 
+```
+
+# django superuser の設定
+
+```javascript
+python manage.py createsuperuser
 ```
