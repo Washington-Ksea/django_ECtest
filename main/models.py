@@ -1,93 +1,145 @@
 from django.db import models
-from django.contrib.auth.models import BaseUserManager, AbstractBaseUser, PermissionsMixin, AbstractUser
+from django.contrib.auth.models import BaseUserManager, AbstractUser
 from django.contrib.auth.validators import UnicodeUsernameValidator
+from django.core.validators import MinValueValidator, MaxValueValidator, MinLengthValidator, RegexValidator
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from django.core.mail import send_mail
-import uuid as uuid_lib
 
-class UserManager(BaseUserManager):
-    """Define a model manager for User model with no username field"""
+import uuid
+from script.get_random import get_random_int_by_string
 
-    use_in_migrations = True
 
-    def _create_user(self, email, password, **extra_fields):
-        """Create and save a User with the given email and password"""
-        
-        if not email:
-            raise ValueError("The given email must be set")
-        email = self.normalize_email(email)
-        user = self.model(email=email, **extra_fields)
-        user.set_password(password)
-        user.save(using=self._db)
-        return user
+class User(AbstractUser):
+    """Custom user to perform authentication by email """
+    username_validator = UnicodeUsernameValidator()
+    username_regex = RegexValidator(regex=r'^[a-zA-Z][a-zA-Z\-]+', message="ユーザネームに使用できない文字が指定されています。")
+    username = models.CharField(_('username'), max_length=150, unique=True,
+        help_text=_('Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.'),
+        validators=[username_validator, username_regex, MinLengthValidator(5)],
+        error_messages={
+            'unique': _("A user with that username already exists."),
+        },
+    )
+    email = models.EmailField('emial address', unique=True)
 
-    def create_user(self, email, password=None, **extra_fields):
-        extra_fields.setdefault("is_staff", False)
-        extra_fields.setdefault("is_superuser", False)
-        return self._create_user(email, password, **extra_fields)
-
-    def create_superuser(self, email, password, **extra_fields):
-        extra_fields.setdefault("is_staff", True)
-        extra_fields.setdefault("is_superuser", True)
-
-        if extra_fields.get("is_staff") is not True:
-            raise ValueError("Superuser must have is_staff=True.")
-        if extra_fields.get("is_superuser") is not True:
-            raise ValueError("Superuser must have is_superuser=True.")
-
-        return self._create_user(email, password, **extra_fields)
-
-class User(AbstractBaseUser, PermissionsMixin):
-    """Custom User model"""
+    #nick_name = models.CharField(_('ユーザーネーム'), max_length=50, default=get_random_int_by_string)
+    habitat = models.CharField(_('だいたいの生活地域'), max_length=100, blank=True, null=True)
+    introduction = models.TextField(_('自己紹介'), max_length=500, blank=True, null=True)
     
-    #url_uuid = models.UUIDField(default=uuid_lib.uuid4, editable=False)
-   
-    email = models.EmailField(_('email address'), unique=True)
-    nick_name = models.CharField(_('ユーザーネーム'), max_length=50, blank=True)
 
-    is_staff = models.BooleanField(
-        _('staff status'),
-        default=False,
-        help_text=_('Designates whether the user can log into this admin site.'),
-    )
-    is_active = models.BooleanField(
-        _('active'),
-        default=True,
-        help_text=_(
-            'Designates whether this user should be treated as active. '
-            'Unselect this instead of deleting accounts.'
-        ),
-    )
-    date_joined = models.DateTimeField(_('date joined'), default=timezone.now)
+class UrlUser(models.Model):
+    """url defined by user"""
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    name = models.CharField(max_length=100)
+    user_url = models.URLField(max_length=200)
 
-    EMAIL_FIELD = 'email'
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = [] #REQUIRED_FIELDSはユーザーを作成するために必要なキーを記述します。
+class interast_Topic_User(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE) 
+    topic_tag = models.CharField(User, max_length=50)
 
-    objects = UserManager()
+class SecretProfile(models.Model):
+    """Information required for bank transfer separately"""
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
 
-    class Meta:
-        verbose_name = _('user')
-        verbose_name_plural = _('users')
-        #abstract = True #not abstract
+    phone_regex = RegexValidator(regex=r'^\d{9,12}$', message="電話番号の桁が足りません")
+    account_number_regex = RegexValidator(regex=r'^\d{7,7}$', message="口座番号を入力してください")
+    financial_institution_code_regex = RegexValidator(regex=r'^\d{4,4}$', message="口座番号を入力してください")
+    branch_code_regex = RegexValidator(regex=r'^\d{3,3}$', message="口座番号を入力してください")
 
-    def clean(self):
-        super().clean()
-        self.email = self.__class__.objects.normalize_email(self.email)
+    deposit_type_state = ((10, '普通預金'), (20, '当座預金'))
+    
+    phone_number = models.CharField(validators=[phone_regex], max_length=12, default='')
+    account_holder = models.CharField(_("口座名義"), max_length=50, default='')
+    account_number = models.CharField(_('口座番号'), max_length=7, validators=[account_number_regex], default='')
+    Deposit_type = models.IntegerField(choices=deposit_type_state, default=10)
+    financial_institution_code = models.CharField(_('金融機関コード'), max_length=4, 
+                                                validators=[financial_institution_code_regex], default='')
+    branch_code = models.CharField(_('金融機関コード'), max_length=3, validators=[branch_code_regex], default='')
 
-    def get_full_name(self):
-        """
-        Return the nickname　instead of a full name.
-        """
-        full_name = '%s' % (self.nick_name)
-        return full_name.strip()
 
-    def get_short_name(self):
-        """Return the short name for the user."""
-        return self.nick_name
+class UserImage(models.Model):
+    """Image displayed on user screen"""
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user_picture = models.ImageField(upload_to='user-image')
+    title = models.CharField(max_length=200)
+    upload_date = models.DateTimeField(default=timezone.now)
 
-    def email_user(self, subject, message, from_email=None, **kwargs):
-        """Send an email to this user."""
-        send_mail(subject, message, from_email, [self.email], **kwargs)
+class FavoriteUser(models.Model):
+    """Favorites model for users"""
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='target-user+')
+    favorite = models.ForeignKey(User, on_delete=models.CASCADE, related_name='favorite-user+')
+
+class BlockUser(models.Model):
+    """Block model for users"""
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='target-user+')
+    block_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='block-user+')
+
+
+class ProductTag(models.Model):
+    """main tag for product"""
+    name = models.CharField(max_length=32)
+    active = models.BooleanField(default=True)
+
+
+    
+
+class ProductSubTag(models.Model):
+    """sub tag for prodacut"""
+    name = models.CharField(max_length=32)
+    #slug = models.SlugField(max_length=48)
+    active = models.BooleanField(default=True)
+
+  
+
+class Product(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    uuid_url = models.UUIDField(default=uuid.uuid4, unique=True)
+    name = models.CharField(max_length=250, unique=True)
+    description = models.TextField(blank=True)
+    price = models.PositiveIntegerField(default=0)
+    active = models.BooleanField(default=True)
+    in_stock = models.BooleanField(default=True)
+    date_created = models.DateTimeField(default=timezone.now)
+    date_updated = models.DateTimeField(auto_now=True)
+
+    tag = models.ForeignKey(ProductTag, on_delete=models.PROTECT)
+    sub_tags = models.ManyToManyField(ProductSubTag, blank=True)
+
+
+    
+
+class ProductImage(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='product-image')
+    thumbnail = models.ImageField(upload_to="product-thumbnails", null=True)
+
+class FavoriteProduct(models.Model):
+    """Favorite model for product"""
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    favorite_product = models.ForeignKey(Product, on_delete=models.CASCADE)
+
+"""
+class Order(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+"""
+
+class Order(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    STATUSES = ((10, 'Negotiation'), (20, 'GotoSettle'), (30, 'Paid'))
+    status = models.IntegerField(choices=STATUSES, default=10)
+
+    #order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+
+    star = models.IntegerField(_('star'), blank=True, null=True, validators=[MinValueValidator(0), MaxValueValidator(5)])
+    comment = models.TextField(_('Comment'), blank=True, null=True, default='')
+    date_created = models.DateTimeField(default=timezone.now)
+    date_updated = models.DateTimeField(auto_now=True)
+
+
+
+
+
 

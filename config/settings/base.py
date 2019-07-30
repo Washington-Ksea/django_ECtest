@@ -34,7 +34,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'allauth',
     'allauth.account',
-    #'allauth.socialaccount',
+    'allauth.socialaccount',
     'main.apps.MainConfig',
 ]
 
@@ -83,7 +83,7 @@ ACCOUNT_LOGOUT_REDIRECT_URL = 'home'
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
-    #'allauth.account.auth_backends.AuthenticationBackend', #CustomUserにおいてEmail設定を行っているため
+    'allauth.account.auth_backends.AuthenticationBackend', #CustomUserにおいてEmail設定を行っているため
 )
 ACCOUNT_AUTHENTICATION_METHOD = 'email' # 認証方法をメールアドレスにする
 
@@ -93,8 +93,10 @@ ACCOUNT_EMAIL_REQUIRED = True
 ACCOUTN_EMAIL_VERIFICATION = 'none'
 
 #USER名を使用しない
-ACCOUNT_USERNAME_REQUIRED = False 
-ACCOUNT_USER_MODEL_USERNAME_FIELD = None #USERNAME_FIELD = 'email'のため
+#ACCOUNT_USERNAME_REQUIRED = False 
+#ACCOUNT_USER_MODEL_USERNAME_FIELD = None #USERNAME_FIELD = 'email'のため
+
+ACCOUNT_LOGOUT_ON_GET = True #ログアウトボタンにより、即座にログアウト実行
 
 SITE_ID = 1
 

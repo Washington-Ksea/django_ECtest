@@ -1,41 +1,151 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from django.contrib.auth.forms import UserChangeForm, UserCreationForm
-from django.utils.translation import ugettext_lazy as _
-from .models import User
+from django.urls import reverse
+from django.utils.html import format_html
+from . import models
+
  
   
-class MyUserChangeForm(UserChangeForm):
-    class Meta:
-        model = User
-        fields = '__all__'
-  
-  
-class MyUserCreationForm(UserCreationForm):
-    class Meta:
-        model = User
-        fields = ('email',)
-  
-  
-class MyUserAdmin(UserAdmin):
+@admin.register(models.User) 
+class UserAdmin(UserAdmin):
     fieldsets = (
-        (None, {'fields': ('email', 'password')}),
-        (_('Personal info'), {'fields': ('nick_name',)}),
-        (_('Permissions'), {'fields': ('is_active', 'is_staff', 'is_superuser',
-                                       'groups', 'user_permissions')}),
-        (_('Important dates'), {'fields': ('last_login', 'date_joined')}),
+        (None, {'fields': ('username', 'email', 'password')}),
+        (
+            'Personal info',
+            {'fields': ('habitat', 'introduction')},
+        ),
+        (
+            'Permissions',
+            {
+                'fields': (
+                    'is_active',
+                    'is_staff',
+                    'is_superuser',
+                    'user_permissions',
+                )
+            },
+        ),
+        (
+            'Important dates',
+            {'fields': ('last_login', 'date_joined')},
+        ),
     )
     add_fieldsets = (
-        (None, {
-            'classes': ('wide',),
-            'fields': ('email', 'password1', 'password2'),
-        }),
+        (
+            None,
+            {
+                'classes': ('wide',),
+                'fields': ('email', 'password1', 'password2'),
+            },
+        ),
     )
-    form = MyUserChangeForm
-    add_form = MyUserCreationForm
-    list_display = ('email', 'nick_name', 'is_staff')
-    list_filter = ('is_staff', 'is_superuser', 'is_active', 'groups')
-    search_fields = ('email', 'nick_name')
+    list_display = (
+        'username',
+        'email',
+        'is_staff',
+    )
+    search_fields = ('username','email')
     ordering = ('email',)
-  
-admin.site.register(User, MyUserAdmin)
+
+@admin.register(models.UrlUser)
+class UrlUserAdmin(admin.ModelAdmin):
+    list_display= ('name', 'user_url')
+    search_fields = ('user__username',)
+
+
+@admin.register(models.interast_Topic_User)
+class interast_Topic_UserAdmin(admin.ModelAdmin):
+    list_display= ('topic_tag',)
+    search_fields = ('user__username',)
+
+@admin.register(models.UserImage)
+class UserImageAdmin(admin.ModelAdmin):
+    list_display= ('user_picture', 'title', 'upload_date')
+    search_fields = ('user__username',)
+
+@admin.register(models.FavoriteUser)
+class FavoriteUserAdmin(admin.ModelAdmin):
+    list_display= ('favorite', )
+    search_fields = ('user__username',)
+
+@admin.register(models.SecretProfile)
+class SecretProfileAdmin(admin.ModelAdmin):
+    list_display = ('phone_number', 
+                    'account_holder', 
+                    'account_number',
+                    'Deposit_type',
+                    'financial_institution_code',
+                    'branch_code')
+    search_fields = ('user__email', )
+    
+
+@admin.register(models.ProductTag)
+class ProductTagAdmin(admin.ModelAdmin): 
+    list_filter = ('active',) 
+    search_fields = ('name',) 
+
+   
+
+@admin.register(models.ProductSubTag)
+class ProductTagAdmin(admin.ModelAdmin): 
+    list_filter = ('active',) 
+    search_fields = ('name',) 
+    
+
+
+@admin.register(models.Product)
+class ProductAdmin(admin.ModelAdmin):
+    fieldsets = (
+        (None, {'fields': ('name', 'price', 'uuid_url')}),
+        (
+            'Info',
+            {'fields': ('description',)},
+        ),
+        (
+            'Permissions',
+            {
+                'fields': (
+                    'active',
+                    'in_stock',
+                )
+            },
+        ),
+    )
+    list_display = ('name', 'price', 'tag')
+    list_filter = ('active', 'in_stock', 'date_updated')
+    #list_editable = ('in_stock',)
+    search_fields = ('user__username', )
+    autocomplete_fields = ('sub_tags',) 
+
+
+@admin.register(models.ProductImage)
+class ProductImageAdmin(admin.ModelAdmin):
+    list_display= ('image', 'thumbnail')
+    search_fields = ('product__name',)
+
+@admin.register(models.FavoriteProduct)
+class FavoriteProductImageAdmin(admin.ModelAdmin):
+    list_display= ('favorite_product', )
+    search_fields = ('user__name',)
+
+@admin.register(models.Order)
+class OrderAdmin(admin.ModelAdmin):
+    fieldsets = (
+        (None, {'fields': ('user', 'product')}),
+        (
+            'Info',
+            {'fields': ('status',)},
+        ),
+        (
+            'Evaluation',
+            {
+                'fields': (
+                    'star',
+                    'comment',
+                )
+            },
+        ),
+    )
+    list_display=('id', 'status', 'star',)
+    search_fields = ('user__name', 'product__name')
+
