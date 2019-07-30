@@ -34,9 +34,11 @@ class UrlUser(models.Model):
     name = models.CharField(max_length=100)
     user_url = models.URLField(max_length=200)
 
+
 class interast_Topic_User(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE) 
     topic_tag = models.CharField(User, max_length=50)
+
 
 class SecretProfile(models.Model):
     """Information required for bank transfer separately"""
@@ -65,10 +67,12 @@ class UserImage(models.Model):
     title = models.CharField(max_length=200)
     upload_date = models.DateTimeField(default=timezone.now)
 
+
 class FavoriteUser(models.Model):
     """Favorites model for users"""
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='target-user+')
     favorite = models.ForeignKey(User, on_delete=models.CASCADE, related_name='favorite-user+')
+
 
 class BlockUser(models.Model):
     """Block model for users"""
@@ -82,15 +86,12 @@ class ProductTag(models.Model):
     active = models.BooleanField(default=True)
 
 
-    
-
 class ProductSubTag(models.Model):
     """sub tag for prodacut"""
     name = models.CharField(max_length=32)
     #slug = models.SlugField(max_length=48)
     active = models.BooleanField(default=True)
 
-  
 
 class Product(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -105,24 +106,18 @@ class Product(models.Model):
 
     tag = models.ForeignKey(ProductTag, on_delete=models.PROTECT)
     sub_tags = models.ManyToManyField(ProductSubTag, blank=True)
-
-
-    
-
+ 
 class ProductImage(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     image = models.ImageField(upload_to='product-image')
     thumbnail = models.ImageField(upload_to="product-thumbnails", null=True)
+
 
 class FavoriteProduct(models.Model):
     """Favorite model for product"""
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     favorite_product = models.ForeignKey(Product, on_delete=models.CASCADE)
 
-"""
-class Order(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-"""
 
 class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
