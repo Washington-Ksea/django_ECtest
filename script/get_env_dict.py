@@ -33,10 +33,8 @@ def get_env_dict(env_path):
     except Exception as e:
         logger.info('環境変数設定のエラー: {e}'.format(e))
     
-    logger.debug("{}".format(env))
     return env
         
 
 env_path = os.path.join(BASE_DIR, '.env')
 env = get_env_dict(env_path)
-print(env)

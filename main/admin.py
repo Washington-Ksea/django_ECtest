@@ -60,8 +60,20 @@ class interast_Topic_UserAdmin(admin.ModelAdmin):
 
 @admin.register(models.UserImage)
 class UserImageAdmin(admin.ModelAdmin):
-    list_display= ('user_picture', 'title', 'upload_date')
-    search_fields = ('user__username',)
+    list_display = ('thumbnail_tag', 'user_name', 'thumbnail') 
+    readonly_fields = ('thumbnail',)
+    search_fields = ('user__username',) 
+    
+    def thumbnail_tag(self, obj): 
+        if obj.thumbnail: 
+            return format_html( 
+                '<img src="%s"/>' % obj.thumbnail.url 
+            ) 
+        return "-"
+    
+    thumbnail_tag.short_description = "Thumbnail"
+    def user_name(self, obj): 
+        return obj.user.username 
 
 @admin.register(models.FavoriteUser)
 class FavoriteUserAdmin(admin.ModelAdmin):
@@ -120,8 +132,20 @@ class ProductAdmin(admin.ModelAdmin):
 
 @admin.register(models.ProductImage)
 class ProductImageAdmin(admin.ModelAdmin):
-    list_display= ('image', 'thumbnail')
-    search_fields = ('product__name',)
+    list_display = ('thumbnail_tag', 'product_name') 
+    readonly_fields = ('thumbnail',)
+    search_fields = ('product__name',) 
+
+    def thumbnail_tag(self, obj): 
+        if obj.thumbnail: 
+            return format_html( 
+                '<img src="%s"/>' % obj.thumbnail.url 
+            ) 
+        return "-"
+    
+    thumbnail_tag.short_description = "Thumbnail"
+    def product_name(self, obj): 
+        return obj.product.name 
 
 @admin.register(models.FavoriteProduct)
 class FavoriteProductImageAdmin(admin.ModelAdmin):

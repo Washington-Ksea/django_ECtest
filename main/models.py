@@ -13,7 +13,7 @@ from script.get_random import get_random_int_by_string
 class User(AbstractUser):
     """Custom user to perform authentication by email """
     username_validator = UnicodeUsernameValidator()
-    username_regex = RegexValidator(regex=r'^[a-zA-Z][a-zA-Z\-]+', message="ユーザネームに使用できない文字が指定されています。")
+    username_regex = RegexValidator(regex=r'^[a-zA-Z0-9][a-zA-Z0-9\-]+', message="ユーザネームに使用できない文字が指定されています。")
     username = models.CharField(_('username'), max_length=150, unique=True,
         help_text=_('Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.'),
         validators=[username_validator, username_regex, MinLengthValidator(5)],
@@ -27,17 +27,24 @@ class User(AbstractUser):
     habitat = models.CharField(_('だいたいの生活地域'), max_length=100, blank=True, null=True)
     introduction = models.TextField(_('自己紹介'), max_length=500, blank=True, null=True)
     
+    
 
 class UrlUser(models.Model):
     """url defined by user"""
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
     user_url = models.URLField(max_length=200)
+    
+    def __str__(self):
+        return self.name
 
 
 class interast_Topic_User(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE) 
-    topic_tag = models.CharField(User, max_length=50)
+    topic_tag = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.topic_tag
 
 
 class SecretProfile(models.Model):
@@ -59,14 +66,19 @@ class SecretProfile(models.Model):
                                                 validators=[financial_institution_code_regex], default='')
     branch_code = models.CharField(_('金融機関コード'), max_length=3, validators=[branch_code_regex], default='')
 
+    class Meta:
+        unique_together = (
+            ('account_number', 'financial_institution_code')
+        )
+    def __str__(self):
+        return self.account_holder
 
 class UserImage(models.Model):
     """Image displayed on user screen"""
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    user_picture = models.ImageField(upload_to='user-image')
-    title = models.CharField(max_length=200)
-    upload_date = models.DateTimeField(default=timezone.now)
-
+    image = models.ImageField(upload_to='user-images')
+    thumbnail = models.ImageField(upload_to='user-thumbnails', null=True)
+    
 
 class FavoriteUser(models.Model):
     """Favorites model for users"""
@@ -82,15 +94,22 @@ class BlockUser(models.Model):
 
 class ProductTag(models.Model):
     """main tag for product"""
-    name = models.CharField(max_length=32)
+    name = models.CharField(max_length=32, unique=True)
     active = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.name
 
 
 class ProductSubTag(models.Model):
     """sub tag for prodacut"""
-    name = models.CharField(max_length=32)
+    name = models.CharField(max_length=32, unique=True)
     #slug = models.SlugField(max_length=48)
     active = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.name
+
 
 
 class Product(models.Model):
@@ -106,10 +125,13 @@ class Product(models.Model):
 
     tag = models.ForeignKey(ProductTag, on_delete=models.PROTECT)
     sub_tags = models.ManyToManyField(ProductSubTag, blank=True)
+
+    def __str__(self):
+        return self.name
  
 class ProductImage(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    image = models.ImageField(upload_to='product-image')
+    image = models.ImageField(upload_to='product-images')
     thumbnail = models.ImageField(upload_to="product-thumbnails", null=True)
 
 
@@ -132,6 +154,7 @@ class Order(models.Model):
     comment = models.TextField(_('Comment'), blank=True, null=True, default='')
     date_created = models.DateTimeField(default=timezone.now)
     date_updated = models.DateTimeField(auto_now=True)
+
 
 
 

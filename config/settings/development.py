@@ -3,6 +3,7 @@ from script.get_env_dict import env
 
 
 
+
 #####################
 # Security settings #
 #####################
@@ -83,8 +84,8 @@ LOGGING = {
 # Static files #
 ################
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'static_root')
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media_root')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static-root')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 ##################
 # Email settings #
