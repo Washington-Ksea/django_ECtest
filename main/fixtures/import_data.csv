@@ -1,0 +1,4 @@
+id,username,email,habitat,introduction,url_name,url,topic,phone,holder,anum,depo,ficode,bcode,uimage,favuser,blockuser,pname,pdisc,price,ptag,sptag,pimage,fproduct,orderp,status,star,comment
+1,test-name1,testemail@test.com,佐賀,よろしく,ポートフォリオホームページ,https://githbu.com/Washington-Ksea,python|golang,9000080122,テスト太郎,1000000,10,1,1,u1.jpg,2|3,2,プログラミング,Testtest,1000,プログラミングを教える,python|ruby,p1-1.jpg|p1-2.jpg|p1-3.jpg,2,2,10,3,Teststet
+2,test-name2,washiemail@test.com,長崎,よろしくお願いします。得意なことは、プログラミングpython です。,ポートフォリオホームページ,https://githbu.com/Washington-Ksea,Ruby|お手伝い,9000002222,猫太郎,9999999,20,10,53,u2.jpg,,1,テスト,あいうえおカキクケコサシスセソ,4000,プログラミングを教える,python,p2-1.jpg,,1,20,,
+3,test-name3,testtest@gmail.jp,福岡,よろしくお願いします。得意なことは、プログラミングpython です。,ポートフォリオホームページ,https://githbu.com/Washington-Ksea,test|猫,952008145,犬太郎,1000002,10,117,101,u3.jpg,1,,草むしり,ねこねこねこ,5000,草むしりします,佐賀県でします。,p3-1.jpg|p3-2.jpg|p3-3.jpg|p3-4.jpg,1|2,3,30,,
