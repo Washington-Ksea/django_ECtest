@@ -232,6 +232,8 @@ mysql> CREATE USER 'mysiteuser'@'localhost' IDENTIFIED BY 'password';
 mysql> GRANT ALL PRIVILEGES ON django_test.* TO 'mysiteuser'@'localhost';
 mysql> FLUSH PRIVILEGES;
 
+//もしテストを実行する場合
+mysql> GRANT ALL PRIVILEGES ON test_django_test.* TO 'mysiteuser'@'localhost';
 //ユーザー名を確認
 SELECT user, host FROM mysql.user;
 //ユーザー名の消去

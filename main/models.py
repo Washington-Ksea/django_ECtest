@@ -27,7 +27,9 @@ class User(AbstractUser):
     habitat = models.CharField(_('だいたいの生活地域'), max_length=100, blank=True, null=True)
     introduction = models.TextField(_('自己紹介'), max_length=500, blank=True, null=True)
     
-    
+    def get_info(self, get_model):
+        return get_model.objects.select_related('user').filter(user__id=self.id)
+
 
 class UrlUser(models.Model):
     """url defined by user"""
@@ -91,6 +93,8 @@ class BlockUser(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='target-user+')
     block_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='block-user+')
 
+    def __str__(self):
+        return self.block_user.username
 
 class ProductTag(models.Model):
     """main tag for product"""
@@ -125,6 +129,10 @@ class Product(models.Model):
 
     tag = models.ForeignKey(ProductTag, on_delete=models.PROTECT)
     sub_tags = models.ManyToManyField(ProductSubTag, blank=True)
+
+    def get_info(self, get_model):
+        return get_model.objects.select_related('product').filter(product__id=self.id)
+
 
     def __str__(self):
         return self.name
