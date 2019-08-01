@@ -28,6 +28,19 @@ class User(AbstractUser):
     introduction = models.TextField(_('自己紹介'), max_length=500, blank=True, null=True)
     
     def get_info(self, get_model):
+        """
+        Get User info tied to User class
+        Args:
+            get_model: class of models.Models tied to user 
+
+        Return:
+            <Obj set []> : user info list
+        
+        Example of How to Use
+            from .app import models    
+            for urls in user_instance.get_info(models.UrlUser):
+                print(urls.name)
+        """
         return get_model.objects.select_related('user').filter(user__id=self.id)
 
 
@@ -35,7 +48,7 @@ class UrlUser(models.Model):
     """url defined by user"""
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
-    user_url = models.URLField(max_length=200)
+    url = models.URLField(max_length=200)
     
     def __str__(self):
         return self.name
@@ -85,13 +98,13 @@ class UserImage(models.Model):
 class FavoriteUser(models.Model):
     """Favorites model for users"""
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='target-user+')
-    favorite = models.ForeignKey(User, on_delete=models.CASCADE, related_name='favorite-user+')
+    target = models.ForeignKey(User, on_delete=models.CASCADE, related_name='favorite-user+')
 
 
 class BlockUser(models.Model):
     """Block model for users"""
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='target-user+')
-    block_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='block-user+')
+    target = models.ForeignKey(User, on_delete=models.CASCADE, related_name='block-user+')
 
     def __str__(self):
         return self.block_user.username
@@ -127,10 +140,24 @@ class Product(models.Model):
     date_created = models.DateTimeField(default=timezone.now)
     date_updated = models.DateTimeField(auto_now=True)
 
-    tag = models.ForeignKey(ProductTag, on_delete=models.PROTECT)
+    tag = models.ForeignKey(ProductTag, on_delete=models.PROTECT, blank=True, null=True)
     sub_tags = models.ManyToManyField(ProductSubTag, blank=True)
 
     def get_info(self, get_model):
+        """
+        Can not use for tag and sub_tags.
+        Get product info tied to product class.
+        Args:
+            get_model: class of models.Models tied to product 
+
+        Return:
+            <Obj set []> : product info list
+        
+        Example of How to Use
+            from .app import models    
+            for image in product_instance.get_info(models.ProductImage):
+                print(image.image.name)
+        """
         return get_model.objects.select_related('product').filter(product__id=self.id)
 
 
@@ -146,7 +173,8 @@ class ProductImage(models.Model):
 class FavoriteProduct(models.Model):
     """Favorite model for product"""
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    favorite_product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+
 
 
 class Order(models.Model):

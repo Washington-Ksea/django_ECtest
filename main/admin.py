@@ -49,7 +49,7 @@ class UserAdmin(UserAdmin):
 
 @admin.register(models.UrlUser)
 class UrlUserAdmin(admin.ModelAdmin):
-    list_display= ('name', 'user_url')
+    list_display= ('name', 'url')
     search_fields = ('user__username',)
 
 
@@ -77,7 +77,7 @@ class UserImageAdmin(admin.ModelAdmin):
 
 @admin.register(models.FavoriteUser)
 class FavoriteUserAdmin(admin.ModelAdmin):
-    list_display= ('favorite', )
+    list_display= ('target', )
     search_fields = ('user__username',)
 
 @admin.register(models.SecretProfile)
@@ -149,7 +149,7 @@ class ProductImageAdmin(admin.ModelAdmin):
 
 @admin.register(models.FavoriteProduct)
 class FavoriteProductImageAdmin(admin.ModelAdmin):
-    list_display= ('favorite_product', )
+    list_display= ('product', )
     search_fields = ('user__name',)
 
 @admin.register(models.Order)

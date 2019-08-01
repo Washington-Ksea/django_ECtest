@@ -72,7 +72,7 @@ LOGGING = {
             'propagate': False,
         },
         # Django本体が出すログ全般を拾うロガー
-        'django': {
+        'django-test': {
             'handlers': ['console'],
             'level': 'INFO',
             'propagate': False,

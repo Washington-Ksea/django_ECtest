@@ -56,7 +56,7 @@ class Command(BaseCommand):
                 urluser, created = models.UrlUser.objects.get_or_create(
                     user=user,
                     name=row['url_name'],
-                    user_url=row['url']
+                    url=row['url']
                 )
                 for_save_objects.append(urluser)
                 topic_tags = row['topic'].split("|")
@@ -107,7 +107,7 @@ class Command(BaseCommand):
                         favuser=row_users[int(favuser)-1]
                         favorite_user, created = models.FavoriteUser.objects.get_or_create(
                             user=user,
-                            favorite=favuser
+                            target=favuser
                         )
                         for_save_objects.append(favorite_user)
                 
@@ -117,7 +117,7 @@ class Command(BaseCommand):
                         blockuser=row_users[int(blockuser)-1]
                         block_user, created = models.BlockUser.objects.get_or_create(
                             user=user,
-                            block_user=blockuser
+                            target=blockuser
                         )
                         for_save_objects.append(block_user)
 
@@ -198,7 +198,7 @@ class Command(BaseCommand):
                     if temp_favprod != "":
                         favoriteproduct, created = models.FavoriteProduct.objects.get_or_create(
                             user=user,
-                            favorite_product=products[int(temp_favprod)-1]
+                            product=products[int(temp_favprod)-1]
                         )
                         for_save_objects.append(favoriteproduct)
 

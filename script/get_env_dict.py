@@ -4,7 +4,7 @@ import os
 from config.settings.base import BASE_DIR
 
 import logging
-logger = logging.Logger(__file__)
+logger = logging.getLogger(__file__)
 
 def get_env_dict(env_path):
     "Return a dictionary of environment variable keyss and their values"
