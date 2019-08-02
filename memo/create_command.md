@@ -40,4 +40,20 @@ class Command(BaseCommand):
 
 製品の画像を並べて表示するため、圧縮したもの
 
+作成したコマンド例 
 
+signals.pyを読み出し
+
+```python
+#main/app.py
+class MainConfig(AppConfig):
+    name = 'main'
+
+    def ready(self):
+        from . import signals
+
+```
+
+```javascript
+./manage.py import_data ./main/fixtures/import_data.csv ./main/fixtures/user-images/ ./main/fixtures/product-images/
+```

@@ -1,8 +1,51 @@
 {% extends "base.html" %}
+{% load static %}
+
+{% block css%}
+    <link rel="stylesheet" type="text/css" href="{% static '/css/home-style.css' %}">
+{% endblock %}
+
+{% block js%}
+    <script src="{% static '/js/home-script.js' %}"></script>
+ 
+{% endblock %}
 
 {% block title %} テスト用のホーム {% endblock　%}
 
 
 {% block content %}
-    <p>test</p>
+<section class="js--section-features">
+    <h1 class="">&nbsp;</h1>
+    <div class="row">
+        <h2>CONCEPT</h2>
+        <p class="long-copy">
+            ああ
+        </p>
+    </div>
+</section>
+<section class="js--section-plans">
+    <h1 class="">&nbsp;</h1>
+    <div class="row">
+        <h2>CONCEPT</h2>
+        <p class="long-copy">
+            ああ
+        </p>
+    </div>
+</section>
+<h1>a</h1>
+<h1>a</h1>
+<h1>a</h1>
+<h1>a</h1>
+<h1>a</h1>
+<h1>a</h1>
+<h1>a</h1>
+<h1>a</h1>
+<h1>a</h1>
+<h1>a</h1>
+<h1>a</h1>
+<h1>a</h1>
+<h1>a</h1>
+<h1>a</h1>
+<h1>a</h1>
+
 {% endblock %}

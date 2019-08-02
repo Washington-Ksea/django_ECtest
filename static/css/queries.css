@@ -1,0 +1,141 @@
+/* Big tablet to 1200px (widths smaller taht the 1140px row) */
+@media only screen and (max-width: 1200px) {
+    .hero-text-box,
+    .ion-social-twitter {
+        width: 100%;
+        padding: 0 2%;
+    }
+    
+    .row { padding: 0 2%; }
+}
+
+
+/* Small tablet to big tablet: from 768px to 1023px */
+@media only screen and (max-width: 1023px) {
+    body { font-size: 18px; }
+    section { padding: 60px 0; }
+    
+    .main-nav {
+        padding: 10px;
+    }
+    
+    .main-nav li {
+        display: inline-block;
+        margin-left: 25px;
+    }
+    
+    .long-copy {
+        width: 80%;
+        margin-left: 10%;
+    }
+    
+}
+
+
+
+/* Small phones to small tablets: from 481px to 767px */
+@media only screen and (max-width: 767px) {
+    body { font-size: 16px; }
+    section { padding: 30px 0; }
+    
+    .row,
+    .hero-text-box { 
+        padding: 0 4%; 
+    }
+    .col { 
+        width: 100%;
+        margin: 0 0 4% 0;
+    }
+
+
+    .nav-display {
+        display: none;
+    }
+ 
+    /*.main-nav { display: none; }*/
+    .ion-social-twitter img {width: 40px;}
+    .mobile-nav-icon {
+        display: block;
+        grid-row: 1/2;
+        grid-column: 3/4;
+        justify-self: end;
+    }
+
+    .nav-block {
+        grid-row: 2/4;
+        grid-column: 2/4;
+        justify-self: center;
+        align-self: center;
+
+    }
+
+    .nav-ul-block {
+        display:flex;
+        flex-direction: row;
+    }
+    
+    .main-nav {
+        margin: 5px;
+        padding: 0px 10%;
+        background-color: #e67d229d;
+        flex-direction: column;
+        justify-content: space-between;
+        
+    }
+  
+    .main-nav li {
+        display: block;
+        margin: 0px;
+        padding: 5px 0 0 0;
+        
+    }
+    .main-nav li a:link,
+    .main-nav li a:visited {
+        white-space: nowrap;
+        display: inline-block;
+        border: 0;
+        padding: 5px 0;
+        font-size: 95%;
+        margin-top: 5px;
+        
+    }
+
+    .main-nav li a:hover,
+    .main-nav li a:active {
+        border-bottom: 2px solid  #ffffff;
+    
+    }
+    
+    .sticky .main-nav { 
+        background-color:  #ff8820;
+    }
+
+
+
+    .sticky .main-nav li a:link,
+    .sticky .main-nav li a:visited { 
+        padding: 5px 0; 
+        color: #ffffff;
+    }
+
+    h1 { font-size: 180%; }
+    h2 { font-size: 150%; }
+    
+    .long-copy {
+        width: 100%;
+        margin-left: 0%;
+    }
+    
+    .app-screen { width: 40%; }
+
+    
+}
+
+
+
+/* Small phones: from 0 to 480px */
+@media only screen and (max-width: 480px) {
+    section { padding: 25px 0; }
+
+}
+

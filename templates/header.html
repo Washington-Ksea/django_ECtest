@@ -1,22 +1,81 @@
-<header>
-    <p>{{ user }}</p>
-    <p>{{ user.is_authenticated }}</p>
-    <p>{{ user.email }}</p>
-    <p>test</p>
-    <p>{{ request.path}}</p>
-    {% if request.path  == '/' %}
-        <p>okokok</p>
-    {% else %}
-        <p>kkkk</p>
+{% load static %}
+
+<header class="{% if request.path == '/' %}home-header{% endif %}">
+  <nav>
+    <div class="row nav-grid">
+      <div class="logo-grid">
+          <a href="/"><img src="{% static '/images/LOGO-help.png' %}" alt="OtasukeLogo-help", class="logo"></a>
+          <a href="/"><img src="{% static '/images/LOGO-help-d.png' %}" alt="OtasukeLogo-help", class="logo-black"></a>
+      </div>
+      <div class="mobile-nav-icon js--nav-icon">
+        <img src="{% static 'images/nav-var.png' %}" alt="nav-icon" class="mobile-nav-image">
+      </div>
+      <div class="nav-block">
+        <div class="nav-display js--main-nav">
+          <div class=nav-ul-block>
+          <ul class="main-nav {% if not user.is_authenticated %}non-user-nav{% endif %} ">
+            <li class="{% if request.path == '/' %}active{% endif %}">
+              <a href="/products/">みんなのスキル</a>
+            </li>
+            {% if user.is_authenticated %}
+              <li class="{% if request.path == '/' %}active{% endif %}">
+                <a href="/accounts/logout/">ログアウト</a>
+              </li>
+            {% else %}
+              <li class="{% if request.path == '/' %}active{% endif %}">
+                <a href="/accounts/login/">ログイン</a>
+              </li>
+            {% endif %}
+            <li class="{% if request.path == '/' %}active{% endif %}">
+              <a href="#our site">About me</a>
+            </li>
+            <li class="{% if request.path == '/' %}active{% endif %}">
+              <a href="mailto:bandad.kw@gmail.com?subject=感想/お問い合わせ&amp;body=本サイトに訪問ありがとうございます">Conntact me</a>
+            </li>
+            <li><a href=""></a></li>
+          </ul>
+          
+          {% if user.is_authenticated %}
+            
+            <ul class="main-nav user-nav">
+              <li class="{% if request.path == '/' %}active{% endif %}">
+                <a href="#">お気に入り</a>
+              </li>
+              <li class="{% if request.path == '/' %}active{% endif %}">
+                <a href="#">お助け登録</a>
+              </li>
+              <li class="{% if request.path == '/' %}active{% endif %}">
+                <a href="#">設定</a>
+              </li>
+              <li></li>
+            </ul>
+            
+          {% endif %}
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </nav>
+  <div class="hero-text-box">
+    <!--HEADER 一面-->
+    {% if request.path == '/' %}
+      {% if user.is_authenticated %}
+       <h3>{{ user.username }}さん</h3>
+      {% else %}
+        <h3></h3>
+      {% endif %}
+      <h1>訪問ありがとうございます。<br>鷲崎
+        <div class="ion-social-twitter">
+            <a href="https://twitter.com/kwashizzz"><img src="{% static '/images/icons8-twitter-128.png' %}" alt="Twitter icon"></a>
+        </div>
+        のポートフォリオサイトです。
+      </h1>
+
+      <h3><br>みなさんは、困っている人を助けたいと思ったことはありませんか？<br>自分のスキルを生かして、サポートしてはどうでしょうか？</h3>
+      <h3>てぇてぇ！！</h3>
+
+      <a class="btn btn-full js--scroll-to-plans" href="#">How to use</a>
+      <a class="btn btn-ghost js--scroll-to-start" href="#">Show me more</a>
     {% endif %}
-    <ul class="">
-        <li
-          class="nav-item {% if request.path == '/' %}active{% endif %}">
-          <a class="nav-link" href="/">Home</a>
-        </li>
-        <li
-          class="nav-item {% if request.path == '/about-us/' %}active{% endif %}">
-          <a class="nav-link" href='/about-us/'>About us</a>
-        </li>
-    </ul>
 </header>

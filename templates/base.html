@@ -1,25 +1,39 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>{% block title %} baseタイトル {% endblock%}</title>
+
+    <link rel="stylesheet" type="text/css" href="{% static '/css/base-style.css' %}">
+    {% block css %}{% endblock %}
+
+    
+    <link rel="stylesheet" type="text/css" href="{% static '/css/queries.css' %}">
+    <link href='http://fonts.googleapis.com/css?family=Lato:100,300,400,300italic' rel='stylesheet' type='text/css'>
+
+    
+
+    <title>{% block title %} おたすけします {% endblock%}</title>
 </head>
 <body>
     <!-- HEADER -->
-    {% if user.is_authenticated %} 
-        <p>Welcome</p>
-    {% else %}
-        {% include "header.html" with user=user path=request.path %}
-        <p>Login</p> 
-    {% endif %}
+    {% include "header.html" with user=user path=request.path %}
 
+    
     {% block content %}
-    {% endblock  %}
-
-    {% block js%}
     {% endblock %}
     
+    
+
+    
 </body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script src="{% static '/js/jquery.waypoints.min.js' %}"></script>
+<script src="{% static '/js/script.js' %}"></script>
+
+{% block js%}
+{% endblock %}
 </html>

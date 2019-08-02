@@ -1,0 +1,83 @@
+/* ----------------------------------------------- */
+/* HOME HEADER CONTENT */
+/* ----------------------------------------------- */
+
+.hero-text-box {
+    position: absolute;
+    width: 1140px;
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.hero-text-box h3{
+    color: #fff;
+}
+
+/* ----------------------------------------------- */
+/* ICON */
+/* ----------------------------------------------- */
+
+.ion-social-twitter {
+    display: inline;
+    padding: 0;
+    margin: 0 -15px;
+}
+
+.ion-social-twitter img {
+    width: 60px;
+    vertical-align: middle;
+    
+}
+
+.ion-social-twitter img a{
+    border-bottom: none;
+}
+
+.ion-social-twitter img:hover {
+    transform: scale(1.2);
+}
+
+/* ----------------------------------------------- */
+/* HOME HEADER BTN*/
+/* ----------------------------------------------- */
+
+ 
+.btn {
+    margin-top: 50px;
+}
+.btn-full:link,
+.btn-full:visited{
+    background-color: #e67e22;
+    border: 1px solid #e67e22;
+    color: #fff;
+    margin-right: 15px;
+}
+
+.btn-ghost:link,
+.btn-ghost:visited {
+    background-color: rgba(235, 156, 67, 0.267);
+    border: 1px solid #e67e22;
+    color: #fff;
+}
+
+.btn-full:hover,
+.btn-full:active {
+    border: 1px solid #a05f25;
+    background-color: #ff7700;
+}
+
+.btn-ghost:hover,
+.btn-ghost:active {
+    background-color: #ff7700;
+    border: 1px solid #cf6d17;
+    color: #fff;
+}
+
+/* ----------------------------------------------- */
+/* FEATURES */
+/* ----------------------------------------------- */
+
+.section-features .long-copy {
+    margin-bottom: 30px;
+}
