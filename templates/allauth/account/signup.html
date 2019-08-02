@@ -1,0 +1,55 @@
+{% extends "account/base.html" %}
+{% load static %}
+{% block css %}
+  <link rel="stylesheet" type="text/css" href="{% static '/css/account-style.css' %}">
+{% endblock %} 
+{% block js %}{% endblock %} 
+
+
+
+{% block title %}アカウント作成{% endblock %}
+
+{% block content %}
+
+<section class="account-block">
+
+  <h2>SIGN UP</h2>  
+  <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
+    {% csrf_token %}
+    
+    {% for field in form%}
+      <div class="account-form">
+        <div class="account-filed">
+          <span class="non-last-field">{{ field }}</span> 
+        </div>
+
+        <div class="account-helptext">
+          {% if field.errors %}
+            <p>{{ field.errors.0 }}</p>
+          {% endif %}
+        </div>
+      </div>
+    {% endfor%}
+
+    {% if redirect_field_value %}
+    <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+    {% endif %}
+
+    {% if form.non_field_errors %}
+    <div class="non-field-error">
+      <ul>
+        {% for non_field_error in form.non_field_errors %}
+          <li>{{non_field_error}}</li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+    
+    <div class="account-grid">
+        <button class="primaryAction form-submit" type="submit">アカウント作成</button>
+        <a href="{{ login_url }}" class="btn btn-account create-account">ログインに戻る</a>
+    </div>
+  </form>
+</section>
+
+{% endblock %}

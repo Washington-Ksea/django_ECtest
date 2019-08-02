@@ -1,0 +1,135 @@
+/*HEADER */
+
+header {
+    position: relative;
+    background-image:none;
+    background-color: rgb(98, 189, 250);
+}
+
+.account-block {
+    position: absolute;
+	top: 60%;
+	left: 50%;
+    transform: translate(-50%, -50%);
+    
+    width: 500px;
+    height: auto;
+    color : #000000;
+    background-color :#ffffff;
+    font-size: 1.6em;
+    line-height: 1.5em;
+    border-radius: 15px;
+    border: 5px solid #cf6d17;
+    text-align: left;
+}
+
+
+.account-block p {
+    font-size: 14px;
+    margin-left: 10%;
+}
+
+.account-form {
+    margin-left: 20%;
+}
+
+.account-field {
+    float: center;
+    margin-top: 30px;
+
+}
+
+input {
+    border:none;
+    font-size: 60%;
+    padding-top:25px;
+    padding-bottom: 0px;
+    border-bottom: 1px solid #ff7700;
+    outline: none;
+    font: 800;
+
+}
+
+.last-field input {
+    width: 30px;
+}
+
+.non-last-field input {
+    width: 300px;
+}
+
+.login-maintain {
+    font-size: 14px;
+}
+.account-helptext {
+    margin-left: 50px;
+    list-style: none;
+    font-size:14px;
+    color: red;
+}
+
+.non-field-error {
+    margin-left: 20%;
+    color: red;
+    font-size: 20px;
+}
+
+.password-reset {
+    margin-left: 20%;
+    font-size: 16px;
+
+}
+
+.account-grid{
+    display: grid;
+    grid-template-rows: 100px;
+    grid-template-columns: 200px, 200px;
+    justify-content: space-around;
+    
+}
+
+.form-submit {
+    grid-row: 1/2;
+    grid-column: 1/2;
+    align-self: center;
+    font-size: 20px;
+    padding: 2px 20px;
+    margin-top: 50px;
+    border-radius: 30px;
+    border-color: #ff7700;
+    color: #ffffff;
+    background-color: #ff7700;
+    border: 1px solid #ff7700;
+    
+}
+
+.form-submit:hover,
+.form-submit:active{
+
+    background-color: #e05a00;
+    color: #ffffff;
+    transform: scale(1.1)
+}
+
+.btn-account:link,
+.btn-account:visited{
+    grid-row: 1/2;
+    grid-column: 2/3;
+    align-self: center;
+    font-size: 20px;
+    padding: 2px 20px;
+    background-color: #ffffff;
+    border: 1px solid #ff7700;
+    color: #ff7700;
+
+    
+}
+
+
+.btn-account:hover,
+.btn-account:active {
+    background-color: #ff7700;
+    color: #ffffff;
+    transform: scale(1.1)
+}
+

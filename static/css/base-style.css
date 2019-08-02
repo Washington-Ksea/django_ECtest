@@ -97,9 +97,21 @@ a:active {
     margin-left: 15%;
 }
 
+.active {
+    transform: scale(1.02);
+    margin-left: 5px;
+
+    border-bottom: solid 2px #fff;/*下線*/
+    
+    
+}
+
 /* ----------------------------------------------- */
 /* BUTTON*/
 /* ----------------------------------------------- */
+.btn {
+    margin-top: 50px;
+}
 
 .btn:link,
 .btn:visited{
@@ -169,6 +181,7 @@ header {
     grid-column: 2/4;
     justify-self: top;
     align-self: center;
+    z-index: 9999;
 }
 .main-nav {
     list-style: none;
@@ -229,6 +242,7 @@ header {
     padding: 2px 10px;
     background-color:rgba(255, 255, 255, 0.98);
     box-shadow: none;
+    
 }
 
 .sticky .non-user-nav{

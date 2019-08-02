@@ -301,3 +301,29 @@ mysql.server restart
 ```javascript
 python manage.py createsuperuser
 ```
+
+
+# all-auth 
+
+all-authのテンプレートを変更するため、templates配下にallauthに関するテンプレートをallauthライブラリディレクトリ配下からコピーし、以下のようにテンプレート読み込み先を追加する。
+
+```python
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [
+            os.path.join(BASE_DIR, 'templates', 'allauth'),
+            os.path.join(BASE_DIR, 'templates'),
+        ],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
+```

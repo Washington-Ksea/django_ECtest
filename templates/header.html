@@ -14,15 +14,15 @@
         <div class="nav-display js--main-nav">
           <div class=nav-ul-block>
           <ul class="main-nav {% if not user.is_authenticated %}non-user-nav{% endif %} ">
-            <li class="{% if request.path == '/' %}active{% endif %}">
+            <li class="{% if request.path == '/products/' %}active{% endif %}">
               <a href="/products/">みんなのスキル</a>
             </li>
             {% if user.is_authenticated %}
-              <li class="{% if request.path == '/' %}active{% endif %}">
+              <li class="{% if request.path == '/accounts/logout/' %}active{% endif %}">
                 <a href="/accounts/logout/">ログアウト</a>
               </li>
             {% else %}
-              <li class="{% if request.path == '/' %}active{% endif %}">
+              <li class="{% if request.path == '/accounts/login/' %}active{% endif %}">
                 <a href="/accounts/login/">ログイン</a>
               </li>
             {% endif %}
