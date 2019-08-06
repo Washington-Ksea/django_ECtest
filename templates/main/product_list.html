@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% load static %}
+{% block css %}
+  <link rel="stylesheet" type="text/css" href="{% static '/css/header-style.css' %}">
+{% endblock %} 
+{% block js %}
+<script src="{% static '/js/get-cookie.js' %}"></script>   
+{% endblock %}
+
+{% block content %}
+    <section>
+        <div>
+            {% for main_tag in tags %}
+                <span><a href="{% url 'products' main_tag.id %}">{{main_tag}}</a></span>
+            {% endfor %}
+        </div>
+        <div>
+            {% for sub_tag in sub_tags %}
+                <span><a href="?sub-tag={{sub_tag.id}}">{{sub_tag}}</a></span>
+            {% endfor %}
+        </div>
+    </section>
+    <section>
+
+    </section>
+    <h2>みんなのスキル</h2>
+    <div>
+        {% for product in object_list %}
+            <div>
+                <p>test</p>
+                <p>{{ product.name }}</p>
+                <p>{{ product.price }}</p>
+                {% if product.tag %}
+                    <p>{{ product.tag.name }}</p>
+                {% else %}
+                    <p><br></p>
+                {% endif %}
+                {% for sub_tag in product.sub_tags.all %}
+                    <span>{{ sub_tag.name }}</span>
+                {% empty %}
+                    <span><br></span>
+                {% endfor %}
+                <p>
+                    <a href="{% url 'product' product.uuid_url %}">See it here</a>
+                </p>
+                <div id='imagebox-{{product.id}}'>
+                    <div class="product-image" id="imagebox">
+                        <img src="{% static 'images/unknown_img.png' %}" alt="tets">
+                    </div>
+                    <h3>LOADING ...</h3>
+                </div>
+                {% for image in product.productimage_set.all %}
+                    {% if forloop.first %}
+                        {% include "js/ajax_image_read.html" with product_id=product.id image_path=image.thumbnail.url %}
+                    {% endif %}
+                {% empty %}
+                    <img src="{% static 'images/unknown_img.png' %}" alt="">
+                {% endfor %}
+            </div>
+        {% endfor %}
+        <ul>
+            {% if page_obj.has_previous %}
+                <li><a href="?page={{page_obj.previous_page_number}}">前へ</a></li>
+            {% else %}
+                <li>mae</li>
+            {% endif %}
+            {% for page in page_obj.page_range %}
+                <li><a href="?page={{page}}">{{page}}</a></li>
+            {% endfor %} 
+            {% if page_obj.has_next %}
+                <li><a href="?page={{page_obj.next_page_number}}">次へ</a></li>
+            {% else %}
+                <li>usiro</li>
+            {% endif %}
+        </ul>
+        
+
+        
+
+    </div>
+{% endblock %}

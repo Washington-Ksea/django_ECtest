@@ -1,0 +1,10 @@
+<script>
+    document.addEventListener('DOMContentLoaded', event => {
+        const imagebox = document.getElementById('imagebox-{{ product_id }}');
+        while (imagebox.firstChild) imagebox.removeChild(imagebox.firstChild);
+        const img = document.createElement('img');
+        img.src = '{{ image_path|safe }}';
+        img.alt = 'thumbnail';
+        imagebox.appendChild(img);
+    })
+</script>
