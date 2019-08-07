@@ -2,16 +2,76 @@
 {% load static %}
 {% block css %}
   <link rel="stylesheet" type="text/css" href="{% static '/css/header-style.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static '/css/product-style.css' %}">
 {% endblock %} 
 {% block js %}
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="{% static '/js/get-cookie.js' %}"></script>   
-    <script src="{% static 'js/post-favorite.js' %}"></script>
+    <script src="{% static 'js/post-favorite-user.js' %}"></script>
+    <script src="{% static 'js/post-favorite-product.js' %}"></script>
+    <script src="{% static 'js/product-imgbox.js' %}"></script>
 {% endblock %}
+
 
 {% block content %}
     <section>
+        <div id="ProductImageBox">
+            <div>
+                {% for image in product.productimage_set.all %}         
+                    {% if forloop.first %}
+                        <img class="product-main-img" id="product-detail-img" src="{{ image.thumbnail.url|safe }}" alt="">
+                    {% endif %}
+                {% endfor %} 
+            </div>
+            <div>
+                {% for image in product.productimage_set.all %}         
+                    {% if not forloop.first %}
+                        <button type="button" class="product-sub-img-button">
+                            <img class="product-sub-img" src="{{ image.thumbnail.url|safe }}" alt="">
+                        </button>
+                        
+                    {% endif %}
+                {% endfor %}
+            </div>
+
+        </div>
+
         <p>{{product.name}}</p>
+        <p>{{product.price}}</p>
+        <p>{{product.description}}</p>
+        <p>{{product.date_updated}}</p>
+        {% if product.tag %}
+            <p>{{ product.tag.name }}</p>
+        {% else %}
+            <p><br></p>
+        {% endif %}
+        {% for sub_tag in product.sub_tags.all %}
+            <span>{{ sub_tag.name }}</span>
+        {% empty %}
+            <span><br></span>
+        {% endfor %}
+
+        <div class="btn">
+            {% if user.is_authenticated %}
+                    <button type="button" class="product-favorite-post" id="">
+                        {% if seller_is_favorite != None %}
+                            <div class="product-is-favorite">お気に入り</div>
+                        {% else %}
+                            <div class="product-is-not-favorite">お気に入り追加</div>
+                        {% endif %}
+                        <input type="hidden" class="api-url-delete" value="{% url 'api-favorite-product-delete' %}">
+                        <input type="hidden" class="api-url-create" value="{% url 'api-favorite-product-create' %}">
+                        <input type="hidden" class="favorite-product" value="{{ product.uuid_url }}">
+                        <input type="hidden" class="login-user" value="{{ user.username }}">
+                    </button>
+            {% else %}
+                <a href="">お気に入り追加</a>
+            {% endif %}
+        </div>
+        <div class=product-order>
+            <a href="">カートに追加</a>
+        </div>
+        <hr>
     </section>
     <section>
         <p>{{seller.seller}}</p>

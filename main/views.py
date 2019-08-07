@@ -77,7 +77,6 @@ class ProductDetailView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(ProductDetailView, self).get_context_data(**kwargs) 
-        print('test')
         #product context
         url = self.kwargs['uuid_url']
         context['product'] = get_object_or_404(
@@ -88,7 +87,6 @@ class ProductDetailView(TemplateView):
         USER_DISPLAY_TARGET_NUM = 1
         seller = {}
         seller['seller'] = context['product'].user
-        print(context['product'], context['product'].user)
         seller['image'] = seller['seller'].get_info(models.UserImage)[0].thumbnail.url
         seller['url'] = seller['seller'].get_info(models.UrlUser)
         

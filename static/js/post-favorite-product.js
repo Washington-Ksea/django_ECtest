@@ -1,17 +1,17 @@
-const seller_favorite_post = document.getElementsByClassName('seller-favorite-post');
+const product_favorite_post = document.getElementsByClassName('product-favorite-post');
 
-for (let i = 0; i < seller_favorite_post.length; i++) {
-    seller_favorite_post[i].addEventListener('click', e => {
+for (let i = 0; i < product_favorite_post.length; i++) {
+    product_favorite_post[i].addEventListener('click', e => {
         e.preventDefault();
         const csrftoken = getCookie('csrftoken');
-        const target_cls = seller_favorite_post[i]
+        const target_cls = product_favorite_post[i];
         
-        target_user = target_cls.getElementsByClassName('favorite-user')[0].value;
+        target_product = target_cls.getElementsByClassName('favorite-product')[0].value;
         login_user = target_cls.getElementsByClassName('login-user')[0].value;
 
-        if (target_cls.getElementsByClassName('seller-is-favorite').length > 0) {
+        if (target_cls.getElementsByClassName('product-is-favorite').length > 0) {
             api_url = target_cls.getElementsByClassName('api-url-delete')[0].value;;
-        } else if (target_cls.getElementsByClassName('seller-is-not-favorite').length > 0) {
+        } else if (target_cls.getElementsByClassName('product-is-not-favorite').length > 0) {
             api_url = target_cls.getElementsByClassName('api-url-create')[0].value;
         }
 
@@ -22,33 +22,33 @@ for (let i = 0; i < seller_favorite_post.length; i++) {
             "Content-Type": "application/json",
             'X-CSRFToken': csrftoken, 
         }
-        const post_favorite_user = async () => {
+        const post_favorite_product = async () => {
             const res = await axios.post(api_url, {
                 login_user: login_user,
-                target: target_user,
+                target: target_product,
             });
             return res;
         }
-        post_favorite_user()
+        post_favorite_product()
             .then(data => {
                 console.log(data.data.message);
                 if (!data.data.success) {
-                    throw new Error('sever process error')
+                    throw new Error('server process error')
                 } 
             })
             .then(data => {
-                if (target_cls.getElementsByClassName('seller-is-favorite').length > 0) {
-                    target_cls.getElementsByClassName('seller-is-favorite')[0].remove('seller-is-favorite');
+                if (target_cls.getElementsByClassName('product-is-favorite').length > 0) {
+                    target_cls.getElementsByClassName('product-is-favorite')[0].remove('product-is-favorite');
                     
                     const div = document.createElement('div');
-                    div.className = 'seller-is-not-favorite';
+                    div.className = 'product-is-not-favorite';
                     div.textContent = 'お気に入り追加'
                     target_cls.insertBefore(div, target_cls.firstChild);
-                } else if (target_cls.getElementsByClassName('seller-is-not-favorite').length > 0) {
-                    target_cls.getElementsByClassName('seller-is-not-favorite')[0].remove('seller-is-not-favorite');
+                } else if (target_cls.getElementsByClassName('product-is-not-favorite').length > 0) {
+                    target_cls.getElementsByClassName('product-is-not-favorite')[0].remove('product-is-not-favorite');
                     
                     const div = document.createElement('div');
-                    div.className = 'seller-is-favorite';
+                    div.className = 'product-is-favorite';
                     div.textContent = 'お気に入り'
                     target_cls.insertBefore(div, target_cls.firstChild);                }
             })

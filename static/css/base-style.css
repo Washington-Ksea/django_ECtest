@@ -135,7 +135,7 @@ a:active {
 
 header {
     background-image: linear-gradient(rgba(75, 100, 112, 0.2), rgba(9, 29, 68, 0.7)), url(../images/dog-hero.jpg);
-    height: 20vh;
+    height: 19vh;
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
@@ -148,7 +148,7 @@ header {
 
 .nav-grid {
     display: grid;
-    grid-template-rows: 150px, 50px 50px;
+    grid-template-rows: 100px, 50px 50px;
     grid-template-columns: 150px, 1fr 1fr;
     justify-content: space-between;
 }
@@ -185,7 +185,7 @@ header {
 }
 .main-nav {
     list-style: none;
-    margin-top: 50px;
+    margin-top: 30px;
     padding: 20px;
     background-color: rgba(9, 29, 68, 0.7);
     box-shadow: 0 2px 2px #000000;
