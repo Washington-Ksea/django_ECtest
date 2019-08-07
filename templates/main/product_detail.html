@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load static %}
+{% block css %}
+  <link rel="stylesheet" type="text/css" href="{% static '/css/header-style.css' %}">
+{% endblock %} 
+{% block js %}
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="{% static '/js/get-cookie.js' %}"></script>   
+    <script src="{% static 'js/post-favorite.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+    <section>
+        <p>{{product.name}}</p>
+    </section>
+    <section>
+        <p>{{seller.seller}}</p>
+        <p>{{seller.topic}}</p>
+        <p>{{seller.image}}</p>
+        <p>{{seller.seller}}</p>
+        <p>{{seller_is_favorite}}</p>
+        <img src="{{seller.image|safe}}" alt="seller image">
+        {% for user_url in seller.url %}
+            <a href="{{user_url.url}}">{{user_url.name}}</a>
+        {% endfor %}
+
+        <div class="btn">
+            {% if user.is_authenticated %}
+                    <button type="button" class="seller-favorite-post" id="">
+                        {% if seller_is_favorite != None %}
+                            <div class="seller-is-favorite">お気に入り</div>
+                        {% else %}
+                            <div class="seller-is-not-favorite">お気に入り追加</div>
+                        {% endif %}
+                        <input type="hidden" class="api-url-delete" value="{% url 'api-favorite-user-delete' %}">
+                        <input type="hidden" class="api-url-create" value="{% url 'api-favorite-user-create' %}">
+                        <input type="hidden" class="favorite-user" value="{{ seller.seller}}">
+                        <input type="hidden" class="login-user" value="{{ user.username }}">
+                    </button>
+            {% else %}
+                <a href="">お気に入り追加</a>
+            {% endif %}
+        </div>
+        
+
+    </section>
+
+{% endblock %}

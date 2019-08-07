@@ -1,5 +1,8 @@
 from django.shortcuts import render, get_object_or_404
+from django.views.generic import TemplateView
 from django.views.generic.list import ListView
+from django.views.generic.detail import DetailView
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from main import models
 from script.pagenation import get_pagenation, get_page_range
@@ -65,5 +68,70 @@ class ProductListView(ListView):
         
 
         return context
+
+
     
+
+class ProductDetailView(TemplateView):
+    template_name = 'main/product_detail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(ProductDetailView, self).get_context_data(**kwargs) 
+        print('test')
+        #product context
+        url = self.kwargs['uuid_url']
+        context['product'] = get_object_or_404(
+            models.Product, uuid_url=url
+        ) 
+        
+        #product seller context
+        USER_DISPLAY_TARGET_NUM = 1
+        seller = {}
+        seller['seller'] = context['product'].user
+        print(context['product'], context['product'].user)
+        seller['image'] = seller['seller'].get_info(models.UserImage)[0].thumbnail.url
+        seller['url'] = seller['seller'].get_info(models.UrlUser)
+        
+        topic_count = seller['seller'].get_count(models.interast_Topic_User)
+        fav_user_count =  seller['seller'].get_count(models.FavoriteUser)
+        fav_product_count = seller['seller'].get_count(models.FavoriteProduct)
+
+        if topic_count > USER_DISPLAY_TARGET_NUM:
+            seller['topic'] = seller['seller'].get_random_info(models.interast_Topic_User, USER_DISPLAY_TARGET_NUM)
+        else:
+            seller['topic'] = seller['seller'].get_info(models.interast_Topic_User)
+
+        if fav_user_count > USER_DISPLAY_TARGET_NUM:
+            seller['fav_user'] = seller['seller'].get_random_info(models.interast_Topic_User, USER_DISPLAY_TARGET_NUM)
+        else:
+            seller['topic'] = seller['seller'].get_info(models.interast_Topic_User) 
+
+        if topic_count > USER_DISPLAY_TARGET_NUM:
+            seller['topic'] = seller['seller'].get_random_info(models.interast_Topic_User, USER_DISPLAY_TARGET_NUM)
+        else:
+            seller['topic'] = seller['seller'].get_info(models.interast_Topic_User)
+        
+        context['seller'] = seller
+
+        #login user context
+        context['seller_is_favorite'] = None
+        context['product_is_favorite'] = None
+        if self.request.user.is_authenticated:
+            user_name = self.request.user.username
+            if user_name is not 'Anonymous':
+                login_user = get_object_or_404(
+                    models.User, username=user_name
+                )  
+                for favorite_user in login_user.get_info(models.FavoriteUser):
+                    if favorite_user.target.id == context['product'].user.id:
+                        context['seller_is_favorite'] = True
+                        print('seller is favorite')
+
+                for favorite_product in login_user.get_info(models.FavoriteProduct):
+                    if favorite_product.product.id == context['product'].id:
+                        context['product_is_favorite'] = True  
+                        print('product is favorite')
+        
+        return context
+
 

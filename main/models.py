@@ -43,6 +43,12 @@ class User(AbstractUser):
         """
         return get_model.objects.select_related('user').filter(user__id=self.id)
 
+    def get_random_info(self, get_model, query_num):
+        return get_model.objects.select_related('user').filter(user__id=self.id).order_by('?')[:query_num]
+        
+    def get_count(self, get_model):
+       return get_model.objects.select_related('user').filter(user__id=self.id).count()
+        
 
 class UrlUser(models.Model):
     """url defined by user"""

@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'main.apps.MainConfig',
+    'api.apps.ApiConfig',
 ]
 
 
